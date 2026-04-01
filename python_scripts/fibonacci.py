@@ -16,8 +16,13 @@ def get_args():
     # on the command line, so the defualt for 'store_true' is acutally false
     parser.add_argument("-v", "--verbose", help="Print verbose output", action='store_true')
 
-    # parse the arguments 
+    # parse the arguments and return in two steps
     args = parser.parse_args()
+    return args
+    # one step 
+#    return parser.parse_args()
+
+
 
 ###--------- function to calculate the fibonacci number
 def fib():
@@ -27,18 +32,28 @@ def fib():
     for i in range(int(args.fibposition)):
         a,b = b,a+b
         fibonacci_number = a 
+        return fibonacci_number
 
 ###--------- function to print the output
-def print_output():
+def print_output(output):
     if args.verbose:
-        print(f"The Fibonacci number for {args.fibposition} is {fibonacci_number}.")
+        print(f"The Fibonacci number for {args.fibposition} is {output}.")
     else: 
-        print(fibonacci_number)
+        print(output)
 
 
 
 ###---------- define the main() function
 def main():
+    fibnum = fib()
+    output = print_output(fibnum)
+
+
+
+###---------- calling get_args() happens out here on its own
+args = get_args()
+
+
 # set the environment for this script
 # is this main (i.e. a standalone Python script), 
 # or is this a Python module being called by another script
