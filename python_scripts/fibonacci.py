@@ -6,7 +6,7 @@ import argparse
 # create an argument parser object
 parser = argparse.ArgumentParser(description="This script calculaytes the number at a given position in the Fibonacci sequence")
 
-# add a positional argument, in this case, the position in the Fibonacci sequence 
+# Add a positional argument, in this case, the position in the Fibonacci sequence 
 parser.add_argument('fibposition', help="position in the Fibonacci sequence", type=int)
 
 # an optional argument for verbose output or not
