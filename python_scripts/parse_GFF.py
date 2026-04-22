@@ -11,16 +11,15 @@ def gff_args():
     parser = argparse.ArgumentParser(description="This script will accept the file names for FASTA genome and GFF data")
 
     # Add a positional argument, in this case, the position in the Fibonacci sequence 
-    parser.add_argument('FASTA', help="FASTA genome file name")
+    parser.add_argument('FASTA', help="FASTA genome file name", type =str)
 
-    parser.add_argument('GFF', help="GFF file name")
+    parser.add_argument('GFF', help="GFF file name", type = str)
 
-    return parser.parse_args()
+    args = parser.parse_args()
+    return args
 
 ###---------- define the main() function
 def main():
-    args = gff_args()
-
     # Read genome sequence
     gseq = gff_functions.read_fasta(args.FASTA)
 
@@ -29,6 +28,10 @@ def main():
 
     # Write output
     gff_functions.write_output(features)
+
+###---------- calling get_args() happens out here on its own
+args = gff_args()
+
 
 if __name__ == '__main__':
     main()
