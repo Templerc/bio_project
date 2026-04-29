@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import csv
+
 # define function within the module "gff_functions.py" that will be used by the main function in parse_gff 
 def read_fasta(fasta_file):
     gseq = ""
@@ -8,42 +10,35 @@ def read_fasta(fasta_file):
         next(f)
         # strip each line
         for line in f:
-            gseq += line.strip()
+            gseq += line.rstrip()
     
     return(gseq)
 
-def read_gff(gff_file, gseq):
-    features = []
-
+def read_gff(gff_file, seq):
     with open(gff_file, 'r') as g:
-        for line in g:
-            if line.startswith("#"):
-                continue
+    # create a csv reader object
+        reader = csv.reader(g, delimiter='\t')
+    
+    # read file line by line
+    for line in reader:
+        start = int(line[3]) - 1
+        end = line[4] # don't change end due to list slicing needing j+1 in [i, j]
+        feature_seq = seq[start:end]
+        
+        # all this to get the gene name
+        attrb = line[8] 
+        # split attributes by semicolon 
+        attrb_list = attrb.split(";")
+        # split the first field on the '=' sign, then the gene name is at the end of the list
+        a = attrb_list[0].split('=')
+        gene_name = a[-1]
+        
+        # easy way goes against assignemnt 
+        write_output(gene_name, feature_seq)
 
-            cols = line.strip().split("\t")
-
-            start = int(cols[3]) - 1 
-            end = int(cols[4])
-
-            # extract sequence
-            seq = gseq[start:end]
-
-            # extract ID
-            attributes = cols[8]
-            seq_id = None
-
-            for item in attributes.split(";"):
-                if item.startswith("ID="):
-                    seq_id = item.replace("ID=", "")
-                    break
-
-            features.append((seq_id, seq))
-
-    return features
+        # alternatively, store in dictionary, where key = gene_name, value = feature_seq
 
 ###--------- function to print the output
-def write_output(features):
-    with open("covid_genes.fasta", "w") as out:
-        for seq_id, seq in features:
-            out.write(f">{seq_id}\n")
-            out.write(seq + "\n")
+def write_output(name, seq):
+    print(f">{name}")
+    print(seq)

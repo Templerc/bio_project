@@ -27,7 +27,7 @@ def main():
     features = gff_functions.read_gff(args.GFF, gseq)
 
     # Write output
-    gff_functions.write_output(features)
+    # gff_functions.write_output(features)
 
 ###---------- calling get_args() happens out here on its own
 args = gff_args()
